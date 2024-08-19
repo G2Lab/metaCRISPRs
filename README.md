@@ -47,7 +47,7 @@ ADD NICK STUFF
 Download CCTyper by following the instructions on GitHub (https://github.com/Russel88/CRISPRCasTyper). The base install directions will only download version 1.5, so upgrade to version 1.8. After following the instructions, a conda environment, cctyper, will be created. Use ```batch_cctyper.sh``` to run cctyper on the downloaded files.
 
 ```
-./batch_cct_parallel.sh
+./batch_cctyper.sh
 ```
 
 ### Compile CRISPR-Cas Systems
