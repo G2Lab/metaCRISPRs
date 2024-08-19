@@ -55,55 +55,40 @@ sbatch --mem=500G --cpus-per-task=20 spades.sh
 ```
 
 ### MGnify Data Download
-Download contig files in bulk from the MGnify website via ```mgnify.ipnyb```. Download taxonomy JSON files in bulk from MGNIFY website via ```tax.ipnyb```. Coordinates for each sample can also be gathered from the MGnify website via ```location_pull.ipnyb```. 
+Download contig files in bulk from the MGnify website via ```mgnify.ipnyb```. Download taxonomy JSON files in bulk from MGNIFY website via ```tax.ipnyb```. Coordinates for each sample can also be gathered from the MGnify website via ```location_pull.ipnyb```. The input for all three notebooks should be a file like ```master_ref.csv```, which lists the desired ENA (ERZ######), Analysis (MGYA########), and Sample ((E|S)RS#######) values to download (from MGnify website). 
 
-Since taxonomy files are not readily available for these samples, MetaPhlAn is used to gather phylogenetic information. See MetaPhlAn's GitHub for more detailed instructions (https://github.com/biobakery/MetaPhlAn)
-
-Run MetaPhlAn on fastq files in a batch:
+See MetaPhlAn's GitHub for more detailed instructions (https://github.com/biobakery/MetaPhlAn). Run MetaPhlAn on fastq files in a batch:
 ```
 sbatch --mem=300G --cpus-per-task=20 mpa.sh
 ```
-Combine MPA output with MPA utility (https://github.com/biobakery/MetaPhlAn/tree/master/metaphlan/utils)
 
-Example:
+Combine MPA output and convert MPA file to Krona format with MPA utilities (https://github.com/biobakery/MetaPhlAn/tree/master/metaphlan/utils):
 ```
 python merge_metaphlan_tables.py -o combined.txt profiled_file1.txt profiled_file2.txt
-```
 
-Convert MPA file to Krona format with MPA utility
-
-Example:
-```
 python metaphlan2krona.py -p combined.txt -k krona.out
 ```
 
-Vizualize using Krona, see more detailed instructions in their GitHub (https://github.com/marbl/Krona/wiki). For non-MGNIFY files, convert .out file to html
-
-Example:
+Vizualize using Krona, see more detailed instructions in their GitHub (https://github.com/marbl/Krona/wiki). 
 ```
-ktImportText krona.out  -o combined.html
-```
+# For non-MGNIFY files, convert .out file to html
+ktImportText krona.out -o combined.html
 
-For MGNIFY files, convert JSON taxonomy files to tsv in bulk
-
-```
+# For MGNIFY files, convert JSON taxonomy files to tsv in bulk:
 bash json2tsv.sh
 ```
 
-Adjust tsv format to algin with Krona expectations
-
+Adjust tsv format to algin with Krona expectations:
 ```
 bash tsv_format.sh
 ```
 
-Convert tsv files to Krona format
-
+Convert tsv files to Krona format:
 ```
 bash tsv2krona.sh
 ```
 
 Combine all Krona html files into one file to represent taxonomy for a region:
-
 ```
 bash krona_combiner.sh
 ```
