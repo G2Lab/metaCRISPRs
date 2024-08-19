@@ -39,7 +39,74 @@ perl filter500.pl
 
 ## MGnify and Self-Assembled Data
 
-ADD NICK STUFF
+### Self-Assembled Data Download
+See NCBI's GitHub for more detailed instructions on how to download files from SRA accession numbers (https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump)
+
+```
+fastq-dump $SRRfilename
+```
+
+### metaSPADES Contig Assembly
+See metaSPADES's GitHub for more detailed instructions (https://github.com/ablab/spades)
+
+Run metaSPADES on fastq files in a batch:
+```
+sbatch --mem=500G --cpus-per-task=20 spades.sh
+```
+
+### MGnify Contig and Taxonomy Data Download
+Download contig files in bulk from the MGnify website via ```mgnify.ipnyb```. Download taxonomy JSON files in bulk from MGNIFY website via ```tax.ipnyb```. Coordinates for each sample can also be gathered from the MGnify website via ```location_pull.ipnyb```. 
+
+Since taxonomy files are not readily available for these samples, MetaPhlAn is used to gather phylogenetic information. See MetaPhlAn's GitHub for more detailed instructions (https://github.com/biobakery/MetaPhlAn)
+
+Run MetaPhlAn on fastq files in a batch:
+```
+sbatch --mem=300G --cpus-per-task=20 mpa.sh
+```
+Combine MPA output with MPA utility (https://github.com/biobakery/MetaPhlAn/tree/master/metaphlan/utils)
+
+Example:
+```
+python merge_metaphlan_tables.py -o combined.txt profiled_file1.txt profiled_file2.txt
+```
+
+Convert MPA file to Krona format with MPA utility
+
+Example:
+```
+python metaphlan2krona.py -p combined.txt -k krona.out
+```
+
+Vizualize using Krona, see more detailed instructions in their GitHub (https://github.com/marbl/Krona/wiki). For non-MGNIFY files, convert .out file to html
+
+Example:
+```
+ktImportText krona.out  -o combined.html
+```
+
+For MGNIFY files, convert JSON taxonomy files to tsv in bulk
+
+```
+bash json2tsv.sh
+```
+
+Adjust tsv format to algin with Krona expectations
+
+```
+bash tsv_format.sh
+```
+
+Convert tsv files to Krona format
+
+```
+bash tsv2krona.sh
+```
+
+Combine all Krona html files into one file to represent taxonomy for a region:
+
+```
+bash krona_combiner.sh
+```
 
 ## CRISPR-Cas System Identification and Analysis
 
