@@ -54,7 +54,7 @@ Run metaSPADES on fastq files in a batch:
 sbatch --mem=500G --cpus-per-task=20 spades.sh
 ```
 
-### MGnify Contig and Taxonomy Data Download
+### MGnify Data Download
 Download contig files in bulk from the MGnify website via ```mgnify.ipnyb```. Download taxonomy JSON files in bulk from MGNIFY website via ```tax.ipnyb```. Coordinates for each sample can also be gathered from the MGnify website via ```location_pull.ipnyb```. 
 
 Since taxonomy files are not readily available for these samples, MetaPhlAn is used to gather phylogenetic information. See MetaPhlAn's GitHub for more detailed instructions (https://github.com/biobakery/MetaPhlAn)
