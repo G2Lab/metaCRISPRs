@@ -31,29 +31,29 @@ curl 'https://genome.jgi.doe.gov/portal/ext-api/downloads/bulk/request' -b cooki
 To prepare files for CCTyper, use ```merge_directories.sh``` to restructure directories.
 
 #### Filter Reads <500bp
-Filter out undesired reads from contigs in all files using filter500.pl
+Filter out undesired reads from contigs in all files using ```filter500.pl```
 
 ```
 perl filter500.pl
 ```
 
-# MGnify and Self-Assembled Data
+## MGnify and Self-Assembled Data
 
 ADD NICK STUFF
 
-# CRISPR-Cas System Identification and Analysis
+## CRISPR-Cas System Identification and Analysis
 
-## CCTyper
-Download CCTyper by following the instructions on GitHub (https://github.com/Russel88/CRISPRCasTyper). The base install directions will only download version 1.5, so upgrade to version 1.8. After following the instructions, a conda environment, cctyper, will be created. Use ```batch_cct_parallel.sh``` to run cctyper on the downloaded files.
+### CCTyper
+Download CCTyper by following the instructions on GitHub (https://github.com/Russel88/CRISPRCasTyper). The base install directions will only download version 1.5, so upgrade to version 1.8. After following the instructions, a conda environment, cctyper, will be created. Use ```batch_cctyper.sh``` to run cctyper on the downloaded files.
 
 ```
 ./batch_cct_parallel.sh
 ```
 
-## Compile CRISPR-Cas Systems
+### Compile CRISPR-Cas Systems
 All data is merged in ```mgnify_antarctic_merge.ipynb```. Two separate files are created: ```jgi_mgnify_AQ_crisprs.csv```, which contains all CRISPRs found in all samples, and ```all_samples.csv```, which contains the metadata for all samples.
 
-## Sample Cluster Assignments
+### Sample Cluster Assignments
 Coordinates are not readily available in the original JGI metadata, so location information is scraped from a branch of the original website. Use TaxonIDs scrape each of the websites using ```latlon_scraping.ipynb```. Once scraped, map them to their continent of origin using geopandas in ```continents.ipynb```. Certain locations (specifically oceans and Antarctica) are generally not available using geopandas, so the remaining locations can be determined using ```oceans.ipynb```.
 
 KMeans clustering is used on the Latitude and Longitude of each file to obtain a geographic cluster. Once all clusters have been created, matrices are created for each that contain all of the samples in that cluster, broken down into their respective CRISPR subtype counts. Any samples that have no CRISPRs are still included with all values set to 0. Several types of matrices are created: all CRISPR-Cas Systems, high confidence CRISPR-Cas Systems, super high confidence CRISPR-Cas Systems, and US CRISPR-Cas Systems.
